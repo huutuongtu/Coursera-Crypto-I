@@ -1,3 +1,4 @@
+
 from curses.ascii import isalpha
 from lib2to3.pytree import convert
 import codecs
@@ -13,6 +14,8 @@ def encrypt(key, msg):
     c = strxor(key, msg)
     return c
 
+def replace_str_index(text,index=0,replacement=''):
+    return '%s%s%s'%(text[:index],replacement,text[index+1:])
 
 def hexxor(a, b):    # xor two hex strings of the same length
     return "".join(["%x" % (int(x,16) ^ int(y,16)) for (x, y) in zip(a, b)])
@@ -44,34 +47,65 @@ cypherTextTarget = "32510ba9babebbbefd001547a810e67149caee11d945cd7fc81a05e9f85a
 
 
 
+sp = '20'
 
-xorOrCypherTextTen = []
-xorOfTextTen = []
-indexOfTextTen = [[],[],[],[],[],[],[],[],[]]
-for i in range(9):
-    xorOrCypherTextTen.append(hexxor(cypherTexts[9], cypherTexts[i]))
-for i in range(9):
-    mang = []
-    
-    for j in range(len(xorOrCypherTextTen[i])//2):
-        bi = str(xorOrCypherTextTen[i][2*j:2*(j+1)])
-        try:
-            
-            binary_str = codecs.decode(bi, 'hex')
-            if (str(binary_str,'utf-8')).isalpha():
-                mang.append(j)
-        except:
-            bi = ''
-    indexOfTextTen[i].append(mang)
 
-"""
-Index of ten
-So hoac space => Text
-[[[0, 2, 4, 6, 12, 13, 17, 24, 26, 27, 29, 31, 33, 34, 35, 36, 45, 50, 51, 52, 54, 55, 58, 59, 66, 67, 70, 74, 75, 77, 79, 81, 83, 84, 87, 89, 91, 93, 94]], [[0, 4, 5, 11, 12, 20, 26, 29, 34, 36, 45, 47, 52, 57, 59, 63, 64, 66, 67, 70, 73, 75, 77, 79, 80, 81, 82, 87, 94]], [[0, 3, 4, 8, 12, 14, 20, 28, 29, 34, 36, 38, 45, 52, 53, 55, 57, 59, 65, 66, 67, 69, 72, 75, 77, 78, 79, 83, 84, 85, 87, 89, 93, 94]], [[0, 3, 4, 12, 14, 23, 26, 28, 29, 30, 31, 34, 35, 36, 44, 45, 52, 54, 55, 59, 60, 66, 67, 68, 71, 75, 77, 79, 82, 87, 91, 93]], [[0, 3, 4, 7, 9, 12, 14, 17, 21, 23, 27, 29, 31, 32, 33, 35, 36, 44, 45, 46, 50, 52, 54, 55, 59, 63, 67, 69, 75, 77, 78, 79, 83, 84, 85, 87, 90, 93, 94]], [[0, 4, 5, 9, 12, 13, 19, 22, 29, 30, 31, 33, 34, 37, 42, 45, 48, 52, 53, 55, 58, 59, 63, 67, 71, 75, 76, 77, 79, 81, 87, 88, 93, 94]], [[0, 4, 5, 9, 12, 13, 19, 22, 29, 30, 31, 32, 33, 36, 44, 45, 51, 52, 59, 63, 67, 69, 73, 75, 77, 85, 87, 88, 93]], [[0, 2, 4, 6, 10, 12, 14, 20, 26, 29, 31, 32, 33, 34, 36, 38, 45, 46, 49, 51, 52, 55, 57, 59, 61, 63, 64, 66, 67, 69, 73, 75, 77, 79, 82, 94]], [[0, 1, 4, 12, 14, 15, 16, 27, 29, 31, 33, 35, 36, 43, 45, 52, 59, 62, 63, 64, 66, 67, 74, 75, 77, 78, 79, 87, 89]]]
-=> space/Number: 0, 4, 12, 29,31,33,34, 36,45,52,55,59, 63,66, 67,75, 77, 79, 87
-Thu tiep tuc voi tat ca cac index
-=> duoc K
-"""
+indexofSpace = [[] for i in range(10)]
+indexofSpace[9] = [0, 4, 12, 29,31,33,34, 36,45,52,55,59, 63,66, 67,75, 77, 79, 87]
+indexofSpace[8] = [1, 15, 16, 27, 34, 35,41, 43, 55, 62, 64, 74, 78, 89, 95, 97, 107]
+indexofSpace[7] = [2, 6, 10, 20, 26, 30, 38, 46, 49, 51, 57, 61, 64, 69, 73, 82, 87, 93, 98, 102, 115, 116, 120]
+indexofSpace[6] = [5, 9, 13, 19, 22, 34, 39, 44, 51, 55, 66, 69, 73, 79, 85, 88, 94, 98, 104, 108, 112, 117]
+indexofSpace[5] = [5, 9, 13, 19, 22, 36, 37, 42, 48, 53, 58, 66, 71, 76, 81, 88, 96, 100, 105, 116, 121]
+indexofSpace[4] = [3, 7, 9, 17, 21, 23, 27, 30, 34, 35, 39, 44, 46, 50, 54, 66, 69, 78, 83, 84, 85, 90, 100]
+indexofSpace[3] = [3, 23, 26, 28, 33, 35, 44, 54, 60, 63, 68, 71, 82, 91, 94, 96, 103]
+indexofSpace[2] = [3, 8, 20, 28, 31, 38, 53, 57, 63, 65, 69, 72, 78, 83, 84, 85, 89]
+indexofSpace[1] = [5, 11, 14, 20, 26, 31, 39, 47, 55, 57, 64, 70, 73, 80, 82, 93, 96, 102, 104]
+indexofSpace[0] = [2, 6, 13, 17, 24, 25, 27, 32, 35, 40, 50, 51, 54, 58, 63, 70, 74, 81, 83, 84, 89, 91, 95, 103, 106, 117]
+# print(indexofSpace[0])
 
-print(indexOfTextTen)
+
+
+k = ['00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000']*10
+for i in range(len(k)):
+    for j in range(len(indexofSpace[i])):
+        ind = indexofSpace[i][j]
+        rep = (hexxor(cypherTexts[i][2*ind:2*ind+2], '20'))
+        position = 2*ind
+        new_character = rep
+        k[i]= k[i][:position] + new_character + k[i][position+2:]
+        # print(k[i])
+        # positionx = 2*ind + 1
+        # new_characterx = rep[1]
+        # k[i]= k[i][:positionx] + new_character + k[i][positionx+1]
+        # print(k[i])
+
         
+        
+        # k[i][2*ind] = rep[0]
+        # k[i][2*ind+1] = rep[1]
+        # k[i][2*ind:2*ind+2] = '11'
+        # print(k[i][2*ind:2*ind+2])
+        # k[i][2*ind:2*ind+2] = str(hexxor(cypherTexts[i][2*ind:2*ind+2], '20'))
+        
+# print(k[9])
+
+
+# sau khi giai duoc key khong day du: 66396e89c9dbd8cb9874352acd63da102eaf0078aa7fed28a06e6bc98d29c51969a0330000f8aa401a9c6d708f80c066c76300f0123148cd00e802d05ba98777335daefcecd59c433a6b268b60bf4ef03c9a611095bb009a3161edc70004a33522cfd200d2000057376edba8c20000007c000061e2a1000045020000000000000000000000000000000
+sec_key = '66396e89c9dbd8cb9874352acd63da102eaf0078aa7fed28a06e6bc98d29c51969a0330000f8aa401a9c6d708f80c066c76300f0123148cd00e802d05ba98777335daefcecd59c433a6b268b60bf4ef03c9a611095bb009a3161edc70004a33522cfd200d2000057376edba8c20000007c000061e2a10000450200000000000000000000000000000000'
+print(hexxor(sec_key, cypherTextTarget))
+
+Message = [[] for i in range(10)]
+# Message[0] = 'We can aactor ;he  umber  5 witz auûwtum computersÐ We c¹n also factor the number 15-wWth a Üog trakn£è to ba¸;"t	Vhe _emedp=àóÕ$@
+# ±Yaï'
+# Message[1] = 'Euler whuld pr bab¢y enjoh that2nwºqis theorem beomes ¹ corner stone of crypto - AcnQnymouË on Eune´«s theo¸5o'
+# Message[2] = 'The nicb thingoabo»t Keey}oq is2nwºne cryptographrs ca¶ drive a lot of fancy cars   zan BoÖeh
+# Message[3] = 'The cipoertextoproªuced bh a wesk0eôzryption algorthm l·oks as good as ciphertext poZuced Úy a stpo¨ë encryº$kollgD~it=0íê.Lá1Zç
+# Message[4] = 'You don t wantoto ¬uy a stt of qab ñ|ys from a guyÞwho s¨ecializes in stealing cars   sarc R×tenbere ¥ãmmenti¤7"oNli[|er'
+# Message[5] = 'There aue two ;ype½ of crhptogrspxyº4 that which wll ke½p secrets safe from your liytRe sisÌer, anf ²äat whi©8"wHa kNip d5s²ÄÎ5÷t å'
+# Message[6] = 'There aue two ;ype½ of cyatograbhi:ºvne that allow the overnment to use brute forch Jo breÙk the ao¢é, and ¥>g Llt Yiqu~"u³Î.@X*þgeç'
+# Message[7] = 'We can tee theopoi t whert the qhypºps unhappy if  wron¿ bit is sent and consumes mbr[ poweÊ from vh£¬enviro¤=gn  AOe S1}©Ó'
+# Message[8] = 'A (privfte-keyf  e crypti~n schwmu émates 3 algorihms, ¶amely a procedure for generltWng keÁs, a ppo¥édure f¥""eGyp_eng;pq®Å'þreø'
+# Message[9] = ' The Coicise O7forªDictioary ( 0 6³9deï¬nes crypo as ¬he art of  writing o r solvdnY codeË. '
+
+#Ciphertext target: The secuet mes<ageîis: Whtn usi|g0aºjtream cipher,Þneverøuse the key more than once
+                   #The secret message is: When using a stream cipher, never use the key more than once
