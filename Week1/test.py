@@ -4,16 +4,16 @@ def strxor(a, b):     # xor two strings of different lengths
     else:
        return "".join([chr(ord(x) ^ ord(y)) for (x, y) in zip(a, b[:len(a)])])
 
-# A1 = '9f970f4e 932330e4'
-# A2 = '6068f0b1 b645c008'
-# A3 = '7c2822eb fdc48bfb'
-# A4 = '325032a9 c5e2364b'
-# A5 = '4af53267 1351e2e1'
-# A6 = '87a40cfa 8dd39154'
-# A7 = '2d1cfa42 c0b1d266'
-# A8 = 'eea6e3dd b2146dd0'
-# print("A:" + strxor(A1,A2))
-# print("B:" + strxor(A3,A4))
-# print("C:" + strxor(A5,A6))
-# print("D:" + strxor(A7,A8))
-print(strxor('5','9'))
+A1 = '9f970f4e 932330e4'
+A2 = '6068f0b1 b645c008'
+A3 = '5f67abaf 5210722b'
+A4 = 'bbe033c0 0bc9330e'
+A5 = '7c2822eb fdc48bfb'
+A6 = '325032a9 c5e2364b'
+A7 = '7b50baab 07640c3d'
+A8 = 'ac343a22 cea46d60'
+print(strxor(A1,A2))
+# print(strxor(A3,A4))
+# print(strxor(A5,A6))
+# print(strxor(A7,A8))
+# print(strxor('5','9'))
